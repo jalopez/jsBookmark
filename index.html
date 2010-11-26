@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="bookmark.js"></script>
+<script type="text/javascript" charset="utf-8">
+    function onLoad() {
+        Bookmark.initStatusFromUrl();
+        newStatus(Bookmark.getStatus());
+
+        Bookmark.addEventListener(newStatus);
+    }
+
+    function newStatus(status) {
+        if (status) {
+            document.getElementById("unoContent").innerHTML = status.uno;
+            document.getElementById("dosContent").innerHTML = status.dos;
+        } else {
+            document.getElementById("unoContent").innerHTML = "";
+            document.getElementById("dosContent").innerHTML = "";
+        }
+        document.getElementById("uno").value = "";
+        document.getElementById("dos").value = "";
+    }
+    
+    function changed(element) {
+        var status = Bookmark.getStatus();
+        if (!status) {
+            status = {
+                "uno": null,
+                "dos": null
+            }
+        }
+        status[element] = document.getElementById(element).value;
+        
+        document.getElementById(element + "Content").innerHTML = status[element];
+        document.getElementById(element).value = "";
+        
+        Bookmark.saveStatus(status);
+    }
+
+    function currentUrl() {
+        document.getElementById("url").innerHTML = Bookmark.getCurrentUrl();
+    }
+</script>
+</head>
+<body onload="onLoad()">
+    <a href="javascript:currentUrl()">Get URL:</a> <span id="url"></span><br />
+    <input type="text" id="uno" onblur="changed('uno')"/><br />
+    <input type="text" id="dos" onblur="changed('dos')"/>
+    <div id="unoContent">
+    </div>
+    <div id="dosContent">
+        
+    </div>
+</body>
+</html>
