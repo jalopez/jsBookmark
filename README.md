@@ -7,6 +7,7 @@ Description
 -----------
 
 This library allows to store and read URL bookmarks based on the hash part. It is ideal to share the current status of AJAX-based applications, and to have browser history support in such applications. It offers two different behaviours:
+
   * Complex status: If the developer wants to bookmark complex application status 
     (JSON objects) the library must save this status encoding it in Base64 format. 
     Therefore, the generated bookmark will be an unreadable string. The 
