@@ -1,6 +1,7 @@
 Bookmark = {
     "listener": null,
-    "status": null
+    "status": null,
+    "encode": true
 };
 
 
@@ -9,19 +10,31 @@ Bookmark.addEventListener = function(listener) {
 }
 
 Bookmark.initStatusFromUrl = function() {
-    this.status = document.location.hash;
+    var status = document.location.hash;
+    if (!this.encode) {
+        status = status.substring(1, status.length);
+    }
+    this.status = status;
 }
 
 Bookmark.getStatus = function() {
+    var result = null;
     if (this.status) {
-        return JSON.parse(Base64.decode(this.status));
-    } else {
-        return null;
+        if (this.encode) {
+            result = JSON.parse(Base64.decode(this.status));
+        } else {
+            result = this.status;
+        }
     }
+    return result;
 }
 
 Bookmark.saveStatus = function(status) {
-    var encoded = Base64.encode(JSON.stringify(status));
+    if (this.encode) {
+        var encoded = Base64.encode(JSON.stringify(status));
+    } else {
+        var encoded = status;
+    }
     document.location.hash = encoded;
     this.status = encoded;
 }
@@ -34,7 +47,11 @@ Bookmark.getCurrentUrl = function() {
 
 Bookmark._updateStatus = function() {
     if (window.location.hash != this.status) {
-        this.status = window.location.hash;
+        var status = document.location.hash;
+        if (!this.encode) {
+            status = status.substring(1, status.length);
+        }
+        this.status = status;
         if (this.listener) {
             this.listener(this.getStatus());
         }
@@ -42,7 +59,7 @@ Bookmark._updateStatus = function() {
 }
 
 
-setInterval("Bookmark._updateStatus()", 1000);
+setInterval("Bookmark._updateStatus()", 200);
 
 
 /////////////////////////////////////////////////////////////

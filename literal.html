@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="bookmark.js"></script>
+<script type="text/javascript" charset="utf-8">
+    function onLoad() {
+        Bookmark.initStatusFromUrl();
+        Bookmark.encode = false;
+        newStatus(Bookmark.getStatus());
+
+        Bookmark.addEventListener(newStatus);
+    }
+
+    function newStatus(status) {
+        if (status) {
+            document.getElementById("status").innerHTML = status;
+        }
+    }
+
+    function save(status) {
+        newStatus(status);
+        Bookmark.saveStatus(status);
+    }
+    
+</script>
+</head>
+<body onload="onLoad()">
+    <input type="button" value="hola" onclick="save('hola')" />
+    <input type="button" value="adios" onclick="save('adios')" />
+    Status: <span id="status"></span>
+</body>
+</html>
